@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>vue数据双向绑定</title>
+	<script type="text/javascript" src="js/vue.js"></script>
+	<script type="text/javascript" src="js/vue-resource.js"></script>
+	<style type="text/css">
+		.name{
+			color: deeppink;
+		}
+		.bb{
+			width: 20px;
+			height: 20px;
+			background: #3ff;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+			var a = new Vue({
+				el:'#box',
+				data:{
+					msg:'hello!'
+				}
+			})
+			var b = new Vue({
+				el:'#box2',
+				data:{
+					arr:['a','b','c','d']
+//					json:{a:'aa',b:'bb',c:'cc',d:'dd'}
+				}
+			})
+//			事件
+			var c = new Vue({
+				el:'#box3',
+				data:{
+					arr1:['a','b','c','d']
+//					json:{a:'aa',b:'bb',c:'cc',d:'dd'}
+				},
+				methods:{
+					show:function(){
+						alert(1)
+					},
+					add:function(){
+						this.arr1.push('vue')
+					}
+				}
+			})
+					
+			var d = new Vue({
+				el:'#box4',
+				methods:{
+					show:function(ev){
+						alert(ev.clientX)
+					}
+				}
+			})
+//			事件冒泡
+			var e = new Vue({
+				el:'#box5',
+				methods:{
+					show:function(ev){
+						alert(1)
+//						阻止事件冒泡
+//						ev.cancelBubble=true;
+					},
+					show1:function(){
+						alert(2)
+						
+					}
+				}
+			})
+						
+			var f = new Vue({
+				el:'#box6',
+				methods:{
+					show:function(ev){
+						alert(1)
+//						ev.preventDefault()
+					}
+				}
+			})
+			
+//			键盘事件
+			var f = new Vue({
+				el:'#box7',
+				methods:{
+					show:function(ev){
+						alert(1)
+//						ev.preventDefault()
+					}
+				}
+			})
+			
+			var f = new Vue({
+				el:'#box8',
+				data:{
+					u:'https://www.baidu.com/img/logo_76bcbf7d7c327b5f29dd98aa4d6e9a1e.png',
+					h:'100px',
+					w:'100px',
+					t:'图片'
+				}
+			})
+			
+			
+			var g = new Vue({
+				el:'#box9',
+				data:{
+					c:{color:'pink'}
+				}
+			})
+			
+			var g = new Vue({
+				el:'#box10',
+				data:{
+					a:true,
+					b:false,
+					d:'name',
+					c:'bb',
+					json:{
+						name:true,
+						bb:true
+					}
+				},
+				
+			})
+			
+			var g = new Vue({
+				el:'#box11',
+				data:{
+					a:true,
+					b:false,
+					d:'name',
+					c:'bb',
+					json:{
+						name:true,
+						bb:true
+					}
+				},
+				
+			})
+			
+			var g = new Vue({
+				el:'#box12',
+				data:{
+					msg:'adds'
+				},
+				
+			})
+			
+//			
+		}
+	</script>
+</head>
+<body style="padding-bottom: 100px;">
+	<div id="box">
+		<input type="text" v-model="msg"/>
+		<br />
+		{{msg}}
+	</div>
+	<!--循环-->
+	<!--与位置有关与名字没有关系      lists索引 index是值-->
+	<div id="box2">
+		<ul>
+			<li v-for="(list,index) in arr">
+				{{list}}----{{index}}
+			</li>
+		</ul>
+	</div>
+	
+	事件
+	<div id="box3">
+		<button v-on:click = "add()"  track-by="$index">按钮</button>
+		<!--无track-by情况：数据修改时，无论值是否被修改，dom都被重新渲染（控制台可以看到）-->
+		<!--加入track-by属性：数据修改时，不变数据所在的dom不被重新渲染，已改变的数据所在dom才被重新渲染-->
+		<button @click = "show()">按钮1</button>     <!-- @  ==>  v-on:-->
+		<ul>
+			<li v-for="a in arr1" >
+				{{a}}
+			</li>
+		</ul>
+	</div>
+	
+	获取值
+	<div id="box4">
+		<input type="button" value="按钮" @click = "show($event)"/>
+	</div>
+	
+	事件冒泡
+	<div id="box5">
+		<div @click = "show1()" style="width: 20px;height: 20px;background: pink;"> 
+			<!--阻止事件冒泡-->
+			<input type="button" @click.stop = "show($event)" value="按钮"/>
+		</div>
+	</div>
+	
+	阻止左键
+	<div id="box6">
+		<!--<input type="button" @contextmenu = "show($event)" value="右键"/>-->
+		<input type="button" @contextmenu.prevent = "show($event)" value="右键"/>  
+						<!--contextmenu 右键菜单-->
+	</div>
+	
+	键盘事件
+	<div id="box7">
+		<!--<input type="button" @contextmenu = "show($event)" value="右键"/>-->
+		<input type="button" @keydown.enter = "show()" value="enter"/>
+		<!--keydown.left   左-->
+		<!--keydown.right   右-->
+	</div>
+
+	绑定图片
+	<div id="box8">
+		<img v-bind:src="u" :width ="w" :height="h" :title="t"/>
+	</div>
+	
+	设置样式
+	<div id="box9">
+		<strong :style="[c]">sdfghjk....</strong>
+	</div>
+	
+	<div id="box10">
+		<strong :class="[c,d]">sdfghjk....</strong>
+		<strong :class="{name:true,bb:true}">sdfghjk....</strong>
+		<strong :class="json">sdfghjk....</strong>
+	</div>
+	
+	<div id="box11">
+		<strong :class="[c,d]">sdfghjk....</strong>
+		<strong :class="json">sdfghjk....</strong>
+	</div>
+	<!--*绑定一次-->
+	<!--{{{}}} 转义-->
+	<div id="box12">
+		<input type="text" v-model = "msg"/>
+		<br />
+		{{msg}}
+		<br />
+		{{*msg}}
+		<br />
+		{{{msg}}}
+	</div>
+	<!--过滤器-->
+	<div id="box13">
+		{{'aaa'|uppercase}}
+	</div>
+	
+	
+	<div id="box14">
+		<input type="button" @click="get()" value="按钮" />
+	</div>
+</body>
+</html>
+
+<script type="text/javascript">
+//	过滤器
+				Vue.filter('uppercase',function(value){
+					if(!value){return ''}
+					value = value.toString()
+					return value.charAt(0).toUpperCase()+value.slice(1)
+				});
+				new Vue({
+					el:'#box13',
+					data:{
+						a:'aaa'
+					}
+				
+				})
+				
+				new Vue({
+					el:"#box14",
+					data:{},
+					methods:{
+						get:function(){
+							this.$http.get('a.txt').then(function(e){
+								alert(e.data)
+							},function(e){
+								alert(e.data)
+							})
+						}
+					}
+				})
+				
+</script>
